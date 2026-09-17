@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Liber – Track Your Reading</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            color: #1a1a1a;
+            background: #E6E0C1;
+        }
+
+        header {
+            padding: 1.5rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #E6E0C1;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 800;
+            letter-spacing: -1px;
+            font-family: 'Playfair Display', serif;
+        }
+
+        .header-buttons {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .header-btn {
+            padding: 0.65rem 1.4rem;
+            border: 1px solid #1a1a1a;
+            background: white;
+            color: #1a1a1a;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .header-btn:hover {
+            background: #1a1a1a;
+            color: white;
+        }
+
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #1a1a1a;
+        }
+
+        .mobile-menu {
+            display: none;
+            position: absolute;
+            top: 60px;
+            right: 1rem;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            z-index: 100;
+        }
+
+        .mobile-menu.active {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .mobile-menu a {
+            padding: 1rem 1.5rem;
+            text-decoration: none;
+            color: #1a1a1a;
+            font-weight: 600;
+            border-bottom: 1px solid #f0f0f0;
+            transition: background 0.3s;
+        }
+
+        .mobile-menu a:last-child {
+            border-bottom: none;
+        }
+
+        .mobile-menu a:hover {
+            background: #f5f5f5;
+        }
+
+        main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+        }
+
+        .hero-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+            margin-bottom: 4rem;
+        }
+
+        .hero-content h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            line-height: 1.1;
+            letter-spacing: -1px;
+font-family: 'Playfair Display', serif;
+        }
+
+        .hero-content p {
+            font-size: 1.1rem;
+            color: #333;
+            margin-bottom: 2rem;
+            line-height: 1.8;
+font-family: 'Playfair Display', serif;
+        }
+
+        .hero-content ul {
+            list-style: none;
+            margin-bottom: 2rem;
+        }
+
+        .hero-content li {
+            font-size: 1rem;
+            color: #333;
+            margin-bottom: 1rem;
+            padding-left: 1.8rem;
+            position: relative;
+        }
+
+        .hero-content li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            font-weight: 800;
+            color: #6366f1;
+        }
+
+        /* iPhone Mockup */
+        .phone-mockup {
+            position: relative;
+            width: 280px;
+            height: 560px;
+            margin: 0 auto;
+        }
+
+        .iphone-frame {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            border-radius: 40px;
+            padding: 12px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        .iphone-screen {
+            width: 100%;
+            height: 100%;
+            background: #f5e6d3;
+            border-radius: 35px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            color: #1a1a1a;
+        }
+
+        .screen-content {
+            width: 100%;
+            height: 100%;
+            border-radius: 35px;
+            overflow: hidden;
+        }
+
+        .screen-content img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        footer {
+            text-align: center;
+            padding: 3rem 2rem;
+            color: #666;
+            font-size: 0.9rem;
+            margin-top: 4rem;
+        }
+
+        footer a {
+            color: #1a1a1a;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s;
+        }
+
+        footer a:hover {
+            color: #6366f1;
+        }
+
+        @media (max-width: 900px) {
+            .hero-container {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .hero-content h1 {
+                font-size: 2.2rem;
+            }
+
+            .phone-mockup {
+                width: 240px;
+                height: 480px;
+            }
+
+            .iphone-frame {
+                padding: 10px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            header {
+                padding: 1rem 1.5rem;
+            }
+
+            .header-buttons {
+                display: none;
+            }
+
+            .menu-toggle {
+                display: block;
+            }
+
+            main {
+                padding: 2rem 1.5rem;
+            }
+
+            .hero-container {
+                gap: 1.5rem;
+                padding: 0;
+            }
+
+            .hero-content h1 {
+                font-size: 1.8rem;
+            }
+
+            .hero-content p,
+            .hero-content li {
+                font-size: 0.95rem;
+            }
+
+            .phone-mockup {
+                width: 200px;
+                height: 400px;
+            }
+
+            .iphone-frame {
+                padding: 8px;
+                border-radius: 30px;
+            }
+
+            .iphone-screen {
+                border-radius: 30px;
+            }
+
+            .screen-content {
+                border-radius: 30px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            header {
+                padding: 1rem;
+            }
+
+            .logo {
+                font-size: 1.5rem;
+            }
+
+            main {
+                padding: 1.5rem 1rem;
+            }
+
+            .hero-container {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-content h1 {
+                font-size: 1.5rem;
+                margin-bottom: 1rem;
+            }
+
+            .hero-content p {
+                font-size: 0.9rem;
+                margin-bottom: 1.5rem;
+            }
+
+            .hero-content li {
+                font-size: 0.85rem;
+                margin-bottom: 0.8rem;
+            }
+
+            .phone-mockup {
+                width: 180px;
+                height: 360px;
+            }
+
+            footer {
+                padding: 2rem 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">Liber</div>
+        <button class="menu-toggle" id="menuToggle">☰</button>
+        <div class="header-buttons" id="headerButtons">
+            <a href="#" class="header-btn">Get on PlayStore</a>
+            <a href="privacy-policy.html" class="header-btn">Privacy Policy</a>
+        </div>
+        <div class="mobile-menu" id="mobileMenu">
+            <a href="#">Get on PlayStore</a>
+            <a href="privacy-policy.html">Privacy Policy</a>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero-container">
+            <div class="hero-content">
+                <h1>Track Your Reading</h1>
+                <p>Liber is your personal book companion. Keep track of the books you're currently ready, and the ones you have already read. All your notes organized in the same app. Build a library of your favourite quotes from different authors.</p>
+                
+            </div>
+
+            <div class="phone-mockup">
+                <div class="iphone-frame">
+                    <div class="iphone-screen">
+                        <div class="screen-content">
+                            <img src="./screenshot.jpg" alt="Liber app screenshot" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>Made with care for book lovers.</p>
+    </footer>
+
+    <script>
+        const menuToggle = document.getElementById('menuToggle');
+        const mobileMenu = document.getElementById('mobileMenu');
+
+        menuToggle.addEventListener('click', () => {
+            mobileMenu.classList.toggle('active');
+        });
+
+        // Close menu when a link is clicked
+        document.querySelectorAll('.mobile-menu a').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.remove('active');
+            });
+        });
+
+        // Close menu when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('header')) {
+                mobileMenu.classList.remove('active');
+            }
+        });
+    </script>
+</body>
+</html>
